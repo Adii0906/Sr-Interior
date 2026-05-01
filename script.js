@@ -1,9 +1,4 @@
-// --- LOADER ---
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 2400);
-    });
+
 
     // --- NAVBAR SCROLL ---
     const navbar = document.getElementById('navbar');
