@@ -7,16 +7,30 @@
     });
 
     // --- MOBILE MENU ---
-    document.getElementById('hamburger').addEventListener('click', () => {
-      document.getElementById('mobileMenu').classList.add('open');
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      hamburger.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
     });
-    document.getElementById('mobileClose').addEventListener('click', () => {
-      document.getElementById('mobileMenu').classList.remove('open');
-    });
+    document.getElementById('mobileClose').addEventListener('click', closeMenu);
     document.querySelectorAll('.mobile-link').forEach(link => {
-      link.addEventListener('click', () => {
-        document.getElementById('mobileMenu').classList.remove('open');
-      });
+      link.addEventListener('click', closeMenu);
+    });
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
     });
 
     // --- SCROLL REVEAL ---
@@ -84,14 +98,17 @@
       .then(response => response.json())
       .then(videos => {
         const galleryGrid = document.querySelector('.gallery-grid');
-        videos.forEach(video => {
+        if (!galleryGrid) return;
+
+        videos.forEach((video, index) => {
           const item = document.createElement('div');
           item.className = 'gallery-item';
           item.innerHTML = `
-            <video controls class="gallery-video" playsinline preload="metadata">
+            <video controls class="gallery-video" playsinline preload="metadata" autoplay muted loop>
               <source src="project/${video}" type="video/mp4">
               Your browser does not support the video tag.
             </video>
+            <div class="portfolio-caption">Project Video ${index + 1}</div>
           `;
           galleryGrid.appendChild(item);
         });
